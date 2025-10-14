@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Page</title>
+    <meta charset="UTF-8">
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <link href="styles/style.css" rel="stylesheet" type="text/css">
+    <script>
+         const green = document.querySelector('.circle1');
+  const yellow = document.querySelector('.circle2');
+  const red = document.querySelector('.circle3');
+
+  function turnOffAll() {
+    green.style.opacity = 0.3;
+    yellow.style.opacity = 0.3;
+    red.style.opacity = 0.3;
+  }
+
+  function trafficLightSequence() {
+    // Green for 10 sec
+    turnOffAll();
+    green.style.color = 'green';
+
+    setTimeout(() => {
+      // Blink green 3 times (1.5 sec)
+      let blinkCount = 0;
+      const blinkInterval = setInterval(() => {
+        green.style.opacity = green.style.opacity == 1 ? 0.3 : 1;
+        blinkCount++;
+        if (blinkCount >= 6) clearInterval(blinkInterval);
+      }, 250);
+
+      // After blinking, yellow for 3 sec
+      setTimeout(() => {
+        turnOffAll();
+        yellow.style.color = 'yellow';
+
+        setTimeout(() => {
+          // Red for 10 sec
+          turnOffAll();
+          red.style.color = 'red' ;
+
+          // Loop the sequence
+          setTimeout(trafficLightSequence, 10000);
+        }, 3000); // yellow duration
+      }, 1500); // time for blinking
+    }, 10000); // green duration
+  }
+
+  // Initialize opacity
+  turnOffAll();
+  trafficLightSequence();
+    </script>
+</head>
+<body>
+    <div class = "square1">
+        <div class = "circle1"></div>
+        <div class = "circle2"></div>
+        <div class = "circle3"></div>
+    </div>
+    </body>
+    </html>
