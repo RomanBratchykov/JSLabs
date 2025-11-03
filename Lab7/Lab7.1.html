@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Робота з властивостями і методами</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 80px;
+        }
+
+        h2, p, div {
+            width: 60%;
+            margin: 15px auto;
+            padding: 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        h2 {
+            background-color: yellow;
+            color: black;
+        }
+
+        p {
+            background-color: white;
+            color: red;
+        }
+
+        div {
+            background-color: yellow;
+            color: black;
+        }
+    </style>
+</head>
+<body>
+
+    <h2 id="first">Доступ до властивостей і методів</h2>
+    <p id="second">Колекція all</p>
+    <div id="third">Метод getElementById ()</div>
+
+    <script>
+        document.getElementById("first").onclick = function() {
+            let el = document.getElementById("first");
+            if (el.style.backgroundColor === "yellow") {
+                el.style.backgroundColor = "blue";
+                el.style.color = "white";
+            } else {
+                el.style.backgroundColor = "yellow";
+                el.style.color = "black";
+            }
+        };
+
+        document.all["second"].onclick = function() {
+            let el = document.all["second"];
+            if (el.style.backgroundColor === "white" || el.style.backgroundColor === "") {
+                el.style.backgroundColor = "green";
+                el.style.color = "white";
+            } else {
+                el.style.backgroundColor = "white";
+                el.style.color = "red";
+            }
+        };
+
+        document.getElementById("third").onclick = function() {
+            let el = document.getElementById("third");
+            if (el.style.backgroundColor === "yellow") {
+                el.style.backgroundColor = "blue";
+                el.style.color = "white";
+            } else {
+                el.style.backgroundColor = "yellow  ";
+                el.style.color = "black";
+            }
+        };
+    </script>
+
+</body>
+</html>
