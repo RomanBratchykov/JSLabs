@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>Обчислення тригонометричних функцій</title>
+  <style>
+    body {
+      font-family: "Segoe UI", sans-serif;
+      background-color: #f8f9fa;
+      padding: 30px;
+    }
+    form {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+      padding: 25px;
+      max-width: 400px;
+      margin: auto;
+    }
+    h2 {
+      color: #2c3e50;
+      text-align: center;
+    }
+    select, input {
+      width: 100%;
+      padding: 8px;
+      margin-top: 10px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+    button {
+      background-color: #2c7a7b;
+      color: white;
+      font-weight: bold;
+      border: none;
+      border-radius: 6px;
+      padding: 10px;
+      cursor: pointer;
+      margin-top: 15px;
+      width: 100%;
+    }
+    button:hover {
+      background-color: #285e61;
+    }
+    #result {
+      margin-top: 20px;
+      font-weight: bold;
+      text-align: center;
+      font-size: 18px;
+    }
+  </style>
+</head>
+
+<body>
+  <form onsubmit="return calculateTrig()">
+    <h2>Обчислення тригонометричних функцій</h2>
+
+    <label for="angle">Введіть кут (в градусах):</label>
+    <input type="text" id="angle" onchange="validateInput(this)" placeholder="Наприклад, 45">
+
+    <label for="func">Оберіть функцію:</label>
+    <select id="func">
+      <option value="sin">sin</option>
+      <option value="cos">cos</option>
+      <option value="tan">tan</option>
+    </select>
+
+    <button type="submit">Обчислити</button>
+
+    <div id="result"></div>
+  </form>
+
+  <script>
+    function validateInput(fld) {
+      const val = fld.value.trim();
+      if (val === "" || isNaN(val)) {
+        alert("Введіть числове значення кута!");
+        fld.focus();
+        fld.select();
+      }
+    }
+
+    function calculateTrig() {
+      const angleField = document.getElementById("angle");
+      const func = document.getElementById("func").value;
+      const angleDeg = parseFloat(angleField.value);
+
+      if (isNaN(angleDeg)) {
+        alert("Помилка: введіть число!");
+        angleField.focus();
+        return false;
+      }
+
+      const radians = angleDeg * Math.PI / 180;
+      const expr = "Math." + func + "(" + radians + ")";
+      const result = eval(expr);
+
+      document.getElementById("result").innerHTML =
+        `${func}(${angleDeg}°) = <b>${result.toFixed(6)}</b>`;
+
+      return false; // не перезавантажує сторінку
+    }
+  </script>
+</body>
+</html>

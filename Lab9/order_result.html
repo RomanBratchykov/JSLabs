@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>Результат замовлення</title>
+  <style>
+    body {
+      font-family: "Segoe UI", sans-serif;
+      background-color: #f2f2f2;
+      padding: 30px;
+    }
+    .box {
+      background: white;
+      border-radius: 12px;
+      padding: 25px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+      max-width: 400px;
+      margin: auto;
+    }
+    h2 {
+      color: #2c7a7b;
+    }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <?php
+      $product = $_POST["product"];
+      $material = $_POST["material"];
+      $quantity = $_POST["quantity"];
+
+      echo "<h2>Ваше замовлення прийнято!</h2>";
+      echo "<p><b>Замовлено виріб:</b> $product</p>";
+      echo "<p><b>Матеріал:</b> $material</p>";
+      echo "<p><b>Кількість:</b> $quantity</p>";
+    ?>
+    <p><a href="Lab9.1.html">← Повернутися</a></p>
+  </div>
+</body>
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>Замовлення меблів</title>
+  <style>
+    body {
+      font-family: "Segoe UI", sans-serif;
+      background-color: #f2f2f2;
+      padding: 30px;
+    }
+    form {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+      padding: 25px;
+      max-width: 400px;
+    }
+    h2 {
+      color: #2c3e50;
+      text-align: center;
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+    select, input {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+    }
+    input[type=submit] {
+      background-color: #2c7a7b;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+    input[type=submit]:hover {
+      background-color: #285e61;
+    }
+  </style>
+</head>
+
+<body>
+  <form name="OrderForm" method="POST" action="order_result.html" onsubmit="return validateForm()">
+    <h2>Замовлення меблів</h2>
+
+    <label for="product">Виріб:</label>
+    <select name="product" id="product">
+      <option value="">-- Оберіть виріб --</option>
+      <option value="шафа">Шафа</option>
+      <option value="стіл">Стіл</option>
+      <option value="сервант">Сервант</option>
+      <option value="тумба">Тумба</option>
+    </select>
+
+    <label for="material">Матеріал:</label>
+    <select name="material" id="material">
+      <option value="">-- Оберіть матеріал --</option>
+      <option value="дуб">Дуб</option>
+      <option value="горіх">Горіх</option>
+      <option value="бук">Бук</option>
+    </select>
+
+    <label for="quantity">Кількість:</label>
+    <input type="number" name="quantity" id="quantity" min="1" placeholder="Введіть кількість">
+
+    <input type="submit" value="Відправити замовлення">
+  </form>
+
+  <script>
+    function validateForm() {
+      const form = document.OrderForm;
+      const product = form.product.value.trim();
+      const material = form.material.value.trim();
+      const quantity = form.quantity.value.trim();
+
+      let message = "";
+
+      if (!product) message += "• Не вибрано виріб\n";
+      if (!material) message += "• Не вибрано матеріал\n";
+      if (!quantity || quantity <= 0) message += "• Некоректно вказана кількість\n";
+
+      if (message) {
+        alert("Виправте помилки:\n\n" + message);
+        return false;
+      } else {
+        form.action = "order_result.html";
+        return true;
+      }
+    }
+  </script>
+</body>
+</html>

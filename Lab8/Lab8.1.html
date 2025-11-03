@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Події миші</title>
+<style>
+  body { background-color: #f0f0f0; font-family: Arial; text-align: center; }
+  p { font-size: 20pt; padding: 10px; transition: all 0.3s; }
+</style>
+<script>
+  let clicked = false;
+  function changeClick(el) {
+    if (!clicked) {
+      el.style.fontSize = "48pt";
+      el.style.color = "white";
+      el.style.backgroundColor = "aqua";
+      clicked = true;
+    } else {
+      el.style.fontSize = "20pt";
+      el.style.color = "black";
+      el.style.backgroundColor = "transparent";
+      clicked = false;
+    }
+  }
+
+  function downColor(el) {
+    el.style.backgroundColor = "green";
+  }
+
+  function upColor(el) {
+    el.style.backgroundColor = "yellow";
+  }
+
+  function overColor(el) {
+    el.style.backgroundColor = "red";
+  }
+
+  function outColor(el) {
+    el.style.backgroundColor = "aqua";
+  }
+</script>
+</head>
+<body>
+
+<h2>П’ять подій з мишкою</h2>
+
+<p onclick="changeClick(this)">Клацніть на мене мишкою</p>
+<p onmousedown="downColor(this)" onmouseup="upColor(this)">
+На цьому тексті натисніть, потримайте і відпустіть ліву кнопку мишки
+</p>
+<p onmouseover="overColor(this)" onmouseout="outColor(this)">
+Повільно проведіть курсором мишки по цій написи
+</p>
+
+</body>
+</html>
