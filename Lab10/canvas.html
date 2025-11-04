@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Побудова Еліпса</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        input[type="number"], button {
+            padding: 8px;
+            margin-right: 10px;
+        }
+        canvas {
+            border: 2px solid #0056b3;
+            margin-top: 20px;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+    <h1> Побудова Еліпса</h1>
+    
+    <label for="semiAxisA">Велика/Мала піввісь (a):</label>
+    <input type="number" id="semiAxisA" value="150" min="10" max="300">
+    
+    <label for="semiAxisB">Мала/Велика піввісь (b):</label>
+    <input type="number" id="semiAxisB" value="100" min="10" max="300">
+    
+    <button onclick="drawEllipses()">Побудувати Еліпси</button>
+    
+    <div id="canvas-container">
+        <canvas id="ellipseCanvas" width="600" height="400"></canvas>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('ellipseCanvas');
+        const ctx = canvas.getContext('2d');
+        const centerX = canvas.width / 2;
+        const centerY = canvas.height / 2;
+
+        function drawEllipses() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            const a = parseInt(document.getElementById('semiAxisA').value);
+            const b = parseInt(document.getElementById('semiAxisB').value);
+
+            if (isNaN(a) || isNaN(b) || a <= 0 || b <= 0) {
+                alert("Будь ласка, введіть коректні розміри півосей (число > 0).");
+                return;
+            }
+            
+            ctx.lineWidth = 2;
+
+            
+            drawMethod_Native(a, b);
+        }
+
+        function drawMethod_Native(a, b) {
+            ctx.beginPath();
+            ctx.ellipse(centerX, centerY, a, b, 0, 0, 2 * Math.PI);
+            ctx.strokeStyle = '#006400'; // Темно-зелений
+            ctx.stroke();
+            ctx.fillStyle = 'rgba(0, 100, 0, 0.1)';
+            ctx.fill();
+        }
+        window.onload = drawEllipses;
+    </script>
+</body>
+</html>

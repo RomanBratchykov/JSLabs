@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Lab 10.1 - Галерея Фото</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                padding: 20px;
+            }
+            select {
+                padding: 8px;
+                font-size: 16px;
+            }
+        </style>
+    </head>
+
+    <body>
+        <h1>Галерея Фотографій</h1>
+
+        <label for="product">Виберіть фото:</label>
+        <select name="product" id="product" onchange="prosm(this)">
+            <option value="" selected disabled>--- Виберіть ---</option> 
+            <option value="3">3</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+        </select>
+
+        <div id="imageContainer">
+            <img id="productImage" src="" alt="Тут з'явиться вибране зображення" 
+                 style="width:300px; height:auto; margin-top:20px;">
+        </div>
+
+        <script>
+            var photos = new Array();
+            
+            photos['3'] = new Image(300, 400);
+            photos['3'].src = "img/3.jfif";
+
+            photos['5'] = new Image(300, 400);
+            photos['5'].src = "img/5.jfif";
+
+            photos['6'] = new Image(300, 400);
+            photos['6'].src = "img/6.jfif";
+
+            photos['7'] = new Image(300, 400);
+            photos['7'].src = "img/7.jfif";
+
+            function prosm(list) {
+                var selectedValue = list.options[list.selectedIndex].value;
+
+                var imageElement = document.getElementById('productImage');
+
+                if (selectedValue && photos[selectedValue]) {
+                    imageElement.src = photos[selectedValue].src;
+                    imageElement.alt = "Фотографія номер " + selectedValue;
+                } else {
+                    imageElement.src = "";
+                    imageElement.alt = "Тут з'явиться вибране зображення";
+                }
+            }
+        </script>
+    </body>
+</html>
