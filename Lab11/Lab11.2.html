@@ -1,0 +1,37 @@
+<html>
+<head><title>Рух квадрата по колу</title></head>
+<body>
+<button id="B1" onclick="Start_stop()" style="position: absolute; left: 300px; top: 5px;">Запустити</button>
+<div id="square" style="position: absolute; width: 50px; height: 50px; background-color: blue;"></div>
+</body>
+<script>
+var t = 0; // Початковий кут
+var R = 200; // Радіус кола
+var centerX = 250; // Центр по X
+var centerY = 250; // Центр по Y
+var dt = 0.05; // Крок кута
+var st = false; // Зупинити процес
+var proc;
+
+function Start_stop() {
+  if (st) {
+    window.clearInterval(proc);
+    st = false;
+    document.all.B1.innerHTML = "Запустити";
+  } else {
+    proc = window.setInterval("move()", 50);
+    st = true;
+    document.all.B1.innerHTML = "Стоп";
+  }
+}
+
+function move() {
+  var x = centerX + R * Math.cos(t);
+  var y = centerY + R * Math.sin(t);
+  document.all.square.style.left = x;
+  document.all.square.style.top = y;
+  t += dt;
+  if (t > 2 * Math.PI) t = 0; // Повернення до початку кола
+}
+</script>
+</html>

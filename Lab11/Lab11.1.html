@@ -1,0 +1,46 @@
+<html>
+<head><title>Перетягування в межах контейнера</title></head>
+<body onload="init()">
+<h2 align="center" style="color: #ff00ff">Перетягування квадрата мишкою всередині сірого квадрата</h2>
+<h3 align="center">
+Встановіть курсор всередині червоного квадрата, натисніть ліву кнопку мишки і тягніть квадрат всередині сірого контейнера.<br>
+Для звільнення квадрата від захоплення відпустіть мишку.
+</h3>
+<p align="right">Примітка. Сторінка правильно відображається в браузерах <i>Mozilla Firefox 2.0</i> і <i>Internet Explorer 6.0</i></p>
+
+<div id="container" style="position: relative; width: 500px; height: 500px; background-color: gray; margin: auto;">
+  <div id="kv" style="position: absolute; left: 10px; top: 10px; width: 50px; height: 50px; background-color: red;"></div>
+</div>
+
+</body>
+<script>
+flag = false; // Зв'язування подій з функціями
+function init() {
+  // Якщо мишка рухається то виконується ф-ція dragItІ
+  document.all.kv.onmousemove = dragIt;
+  // Якщо кнопка мишки відпускається, то - ф-ція osvobodi
+  document.all.kv.onmouseup = osvobodi;
+  document.all.kv.onmousedown = zachvat;
+}
+function dragIt(evt) {
+  var sobytie = (evt) ? evt : (window.event) ? window.event : "";
+  if (flag) {
+    var container = document.all.container;
+    var contTop = container.offsetTop;
+    var contLeft = container.offsetLeft;
+    var newTop = sobytie.clientY - contTop - 25;
+    var newLeft = sobytie.clientX - contLeft - 25;
+    newTop = Math.max(0, Math.min(450, newTop));
+    newLeft = Math.max(0, Math.min(450, newLeft));
+    document.all.kv.style.top = newTop;
+    document.all.kv.style.left = newLeft;
+  }
+}
+function osvobodi() {
+  flag = false; // встановлюється заборона на перетягування
+}
+function zachvat() {
+  flag = true; // Перетягування дозволяється
+}
+</script>
+</html>
