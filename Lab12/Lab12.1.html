@@ -1,0 +1,167 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>Тригонометричні функції</title>
+    <style>
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            padding: 20px;
+        }
+        h1 {
+            font-size: 32px;
+            color: red;
+            text-align: center;
+        }
+        label {
+            font-size: 24px;
+            color: blue;
+            cursor: pointer;
+            display: inline-block;
+            width: 80px;
+        }
+        p {
+            font-size: 20px;
+            color: black;
+        }
+        input[type="number"], select {
+            font-size: 20px;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            font-size: 20px;
+            color: white;
+            background-color: red;
+            cursor: pointer;
+            border-radius: 8px;
+            border: none;
+            padding: 10px 20px;
+            transition: background-color 0.3s ease;
+            margin-top: 20px;
+        }
+        button:hover {
+            background-color: rgb(182, 26, 26);
+        }
+    </style>
+</head>
+<body>
+    <h1>Тригонометричні функції</h1>
+
+    <label for="funkSelect">Функції:</label>
+    <select id="funkSelect" name="Funk">
+        <option value="sin(x)">Синус (sin(x))</option>
+        <option value="cos(x)">Косинус (cos(x))</option>
+        <option value="tg(x)">Тангенс (tg(x))</option>
+        <option value="ctg(x)">Котангенс (ctg(x))</option>
+    </select>
+    
+    <br><br>
+    <p>Введіть значення в градусах (Від і До):</p>
+    
+    <label for="start">Від:</label>
+    <input type="number" id="start" name="start" value="30">
+    <br><br>
+    
+    <label for="end">До:</label>
+    <input type="number" id="end" name="end" value="36">
+    <br><br>
+    
+    <label for="step">Крок:</label>
+    <input type="number" id="step" name="step" value="2">
+    <br><br>
+    
+    <button onclick="createRaport()">Порахувати</button>
+
+</body>
+<script>
+    function createRaport() {
+        const funk = document.getElementById("funkSelect").value;
+        const start = parseFloat(document.getElementById("start").value);
+        const end = parseFloat(document.getElementById("end").value);
+        const step = parseFloat(document.getElementById("step").value);
+        
+        const tolerance = 1e-9; 
+        
+        // 1. Валідація вхідних даних
+        if (step <= 0 || start >= end || isNaN(start) || isNaN(end) || isNaN(step)) {
+            alert("Некоректні вхідні дані! Перевірте Крок (> 0) та діапазон (Від < До).");
+            return;
+        }
+        if (start < -720 || end > 720) {
+             alert("Діапазон кутів має бути в межах від -720° до 720°.");
+            return;
+        }
+
+        let raportWindow = window.open("", "Raport", "width=800,height=400,scrollbars=yes");
+        let raportContent = `
+            <style>
+                body { font-family: 'Courier New', Courier, monospace; }
+                h1 { font-size: 24px; color: red; text-align: center; }
+                table { border-collapse: collapse; width: 90%; margin: 20px auto; }
+                th, td { border: 1px solid black; padding: 10px; text-align: center; }
+                th { background-color: #f2f2f2; }
+            </style>
+            <h1>Звіт по функції ${funk}</h1>
+            <table border="1">
+                <tr>
+                    <th colspan="2">Кут</th>
+                    <th rowspan="2">Значення ${funk}</th>
+                </tr>
+                <tr>
+                    <th>в градусах</th>
+                    <th>в радіанах</th>
+                </tr>
+        `;
+        
+        for (let x = start; x <= end + (step / 2); x += step) {
+            let radians = x * (Math.PI / 180);
+            let y;
+            let displayValue = "";
+
+            switch (funk) {
+                case "sin(x)":
+                    y = Math.sin(radians);
+                    break;
+                case "cos(x)":
+                    y = Math.cos(radians);
+                    break;
+                case "tg(x)":
+                    if (Math.abs(Math.cos(radians)) < tolerance) {
+                        displayValue = "Не визначено (Асимптота)";
+                    } else {
+                        y = Math.tan(radians);
+                    }
+                    break;
+                case "ctg(x)":
+                    if (Math.abs(Math.sin(radians)) < tolerance) {
+                        displayValue = "Не визначено (Асимптота)";
+                    } else {
+                        y = 1 / Math.tan(radians);
+                    }
+                    break;
+            }
+
+            if (displayValue === "") {
+                if (Math.abs(y) > 1e10) { 
+                    displayValue = "±Inf"; 
+                } else {
+                    displayValue = y.toFixed(6); 
+                }
+            }
+
+            raportContent += `
+                <tr>
+                    <td>${x.toFixed(4)}</td>
+                    <td>${radians.toFixed(4)}</td>
+                    <td>${displayValue}</td>
+                </tr>
+            `;
+        }
+
+        raportContent += `</table>`;
+        raportWindow.document.write(raportContent);
+        raportWindow.document.close();
+    }
+</script>
+</html>

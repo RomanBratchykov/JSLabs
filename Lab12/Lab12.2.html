@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Облік надходження товарів</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f4f4f9;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: white;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        .total-row td {
+            font-weight: bold;
+            background-color: #e9ecef;
+            text-align: right;
+            border-top: 2px solid #333;
+        }
+        .edit-panel {
+            margin-top: 30px;
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background-color: #fff;
+        }
+        .edit-panel input[type="number"] {
+            padding: 8px;
+            margin-right: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 100px;
+        }
+        .edit-panel button {
+            padding: 10px 15px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .edit-panel button:hover {
+            background-color: #1e7e34;
+        }
+        .selected-row {
+            background-color: #ffc107 !important; /* Виділення обраного рядка */
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Облік надходження товарів</h1>
+
+    <table id="productsTable">
+        <thead>
+            <tr>
+                <th>№</th>
+                <th>Назва товару</th>
+                <th>Кількість</th>
+                <th>Ціна, грн</th>
+                <th>Вартість, грн</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr data-id="1">
+                <td>1</td>
+                <td>Ноутбук Lenovo</td>
+                <td class="quantity">10</td>
+                <td class="price">15000.00</td>
+                <td class="cost">150000.00</td>
+            </tr>
+            <tr data-id="2">
+                <td>2</td>
+                <td>Монітор Dell</td>
+                <td class="quantity">25</td>
+                <td class="price">5500.00</td>
+                <td class="cost">137500.00</td>
+            </tr>
+            <tr data-id="3">
+                <td>3</td>
+                <td>Клавіатура Logitech</td>
+                <td class="quantity">50</td>
+                <td class="price">800.00</td>
+                <td class="cost">40000.00</td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr class="total-row">
+                <td colspan="4" style="text-align: right;">Загальна сума:</td>
+                <td id="totalAmount">327500.00</td>
+            </tr>
+        </tfoot>
+    </table>
+
+    <div class="edit-panel">
+        <h2>Редагування товару</h2>
+        <p>Обраний товар: <span id="selectedProduct" style="font-weight: bold;">(Не обрано)</span></p>
+
+        <label for="newQuantity">Нова кількість:</label>
+        <input type="number" id="newQuantity" min="0" step="1" placeholder="Введіть кількість">
+
+        <label for="newPrice">Нова ціна (грн):</label>
+        <input type="number" id="newPrice" min="0" step="0.01" placeholder="Введіть ціну">
+        
+        <button onclick="updateSelectedProduct()">Оновити дані</button>
+    </div>
+
+</body>
+<script>
+    let selectedRow = null;
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const rows = document.querySelectorAll('#productsTable tbody tr');
+        rows.forEach(row => {
+            row.addEventListener('click', () => {
+                selectRow(row);
+            });
+        });
+
+        calculateTotal();
+    });
+
+    function selectRow(row) {
+        if (selectedRow) {
+            selectedRow.classList.remove('selected-row');
+        }
+
+        selectedRow = row;
+        selectedRow.classList.add('selected-row');
+
+        const productName = row.children[1].textContent;
+        const currentQuantity = row.querySelector('.quantity').textContent;
+        const currentPrice = row.querySelector('.price').textContent;
+
+        document.getElementById('selectedProduct').textContent = productName;
+        document.getElementById('newQuantity').value = parseFloat(currentQuantity);
+        document.getElementById('newPrice').value = parseFloat(currentPrice);
+    }
+
+    function updateSelectedProduct() {
+        if (!selectedRow) {
+            alert("Будь ласка, оберіть товар для редагування, натиснувши на відповідний рядок таблиці.");
+            return;
+        }
+
+        const newQuantity = parseFloat(document.getElementById('newQuantity').value);
+        const newPrice = parseFloat(document.getElementById('newPrice').value);
+
+        if (isNaN(newQuantity) || isNaN(newPrice) || newQuantity < 0 || newPrice < 0) {
+            alert("Введіть коректні числові значення для кількості та ціни.");
+            return;
+        }
+
+        const quantityCell = selectedRow.querySelector('.quantity');
+        const priceCell = selectedRow.querySelector('.price');
+        const costCell = selectedRow.querySelector('.cost');
+
+        quantityCell.textContent = newQuantity.toFixed(0);
+        priceCell.textContent = newPrice.toFixed(2);
+
+        const newCost = newQuantity * newPrice;
+        costCell.textContent = newCost.toFixed(2);
+
+        calculateTotal();
+        
+        alert(`Дані для товару "${selectedRow.children[1].textContent}" успішно оновлено.`);
+    }
+
+    function calculateTotal() {
+        let total = 0;
+        const costCells = document.querySelectorAll('#productsTable .cost');
+        
+        costCells.forEach(cell => {
+            total += parseFloat(cell.textContent);
+        });
+
+        document.getElementById('totalAmount').textContent = total.toFixed(2);
+    }
+</script>
+</html>
