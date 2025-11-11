@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Лабораторна робота №13 (Завдання 7*)</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        select { padding: 8px; margin-right: 20px; font-size: 16px; }
+        #selection-output { margin-top: 15px; font-weight: bold; color: green; }
+    </style>
+</head>
+<body>
+    <h1>Завдання 7: Динамічні Випадаючі Списки</h1>
+
+    <select name="country" id="country">
+        <option value="ger">Germany</option>
+        <option value="usa">USA</option>
+        <option value="ukr">Ukraine</option>
+    </select>
+    
+    <select name="cities" id="cities"></select>
+    
+    <p id="selection-output">Країна та місто не обрані.</p>
+
+    <script>
+        const cityData = {
+            ger: ["Berlin", "Munich", "Hamburg"],
+            usa: ["New York", "Chicago", "Miami"],
+            ukr: ["Kyiv", "Lviv", "Odesa"]
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const countrySelect = document.getElementById('country');
+            const citySelect = document.getElementById('cities');
+            const outputParagraph = document.getElementById('selection-output');
+
+            function updateCities() {
+                const selectedCountryCode = countrySelect.value;
+                const cities = cityData[selectedCountryCode] || [];
+
+                citySelect.innerHTML = '';
+
+                cities.forEach(city => {
+                    const option = document.createElement('option');
+                    option.value = city;
+                    option.textContent = city;
+                    citySelect.appendChild(option);
+                });
+
+                updateOutput(); 
+            }
+
+            function updateOutput() {
+                const countryName = countrySelect.options[countrySelect.selectedIndex].textContent;
+                const cityName = citySelect.value;
+                
+                outputParagraph.textContent = `Обрано: Країна — ${countryName}, Місто — ${cityName}`;
+            }
+
+            countrySelect.addEventListener('change', updateCities);
+            citySelect.addEventListener('change', updateOutput);
+
+            updateCities(); 
+        });
+    </script>
+</body>
+</html>

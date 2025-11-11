@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Лабораторна робота №13 (Завдання 1-6)</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            transition: background-color 0.4s;
+            padding: 20px;
+        }
+        h2 { border-bottom: 2px solid #ccc; padding-bottom: 5px; margin-top: 30px; }
+        .task-container { margin-bottom: 40px; padding: 15px; border: 1px dashed #007bff; }
+        button, select { padding: 8px 15px; margin: 5px; cursor: pointer; }
+        #text { font-size: 16px; color: black; } /* Базовий стиль для Завдання 2 */
+        #link-task3 { color: blue; text-decoration: underline; cursor: pointer; padding: 5px; }
+        #size-output { margin-top: 15px; padding: 10px; border: 1px solid #0056b3; background-color: #e6f7ff; }
+    </style>
+</head>
+<body>
+
+    <h1>Лабораторна робота №13: DOM та Події</h1>
+
+    <div class="task-container">
+        <h2>1. Керування вікном (window)</h2>
+        <button onclick="task1Run()">Запустити послідовність дій з вікном</button>
+        <p><i>Для виконання браузер вимагає дозвіл на спливаючі вікна.</i></p>
+    </div>
+
+    <div class="task-container">
+        <h2>2. Зміна стилю елемента</h2>
+        <p id="text">I learning JavaScript events!</p> 
+        <button onclick="changeCSS()">Change style!</button>
+    </div>
+
+    <div class="task-container">
+        <h2>3. Зміна фону сторінки через події</h2>
+        <button id="btn1-task3">Кнопка 1 (Клік)</button>
+        <button id="btn2-task3">Кнопка 2 (Подвійний клік)</button>
+        <button id="btn3-task3">Кнопка 3 (Утримування)</button>
+        <br><br>
+        <span id="link-task3">Наведи на лінку!</span>
+    </div>
+
+    <div class="task-container">
+        <h2>4. Видалення елементів випадаючого списку</h2>
+        <select id="select-to-remove">
+            <option value="1">Елемент 1</option>
+            <option value="2">Елемент 2</option>
+            <option value="3">Елемент 3</option>
+        </select>
+        <button onclick="removeSelectedOption()">Видалити обраний елемент</button>
+    </div>
+
+    <div class="task-container">
+        <h2>5. Події миші з повідомленнями</h2>
+        <button 
+            onclick="console.log('I was pressed!')"
+            onmouseover="console.log('Mouse on me!')"
+            onmouseout="console.log('Mouse is not on me!')"
+        >
+            Натисніть або наведіть
+        </button>
+        <p><i>Дивіться консоль браузера (F12) для повідомлень.</i></p>
+    </div>
+
+    <div class="task-container">
+        <h2>6. Відстеження розміру вікна</h2>
+        <div id="size-output">
+            Поточна ширина: <span id="width-output"></span> px<br>
+            Поточна висота: <span id="height-output"></span> px
+        </div>
+        <p>Спробуйте змінити розмір вікна браузера.</p>
+    </div>
+
+    <script>
+        function task1Run() {
+            let newWindow;
+            const delay = 2000; 
+            newWindow = window.open("", "LabWindow", "width=300,height=300");
+            if (!newWindow) return alert("Браузер заблокував вікно.");
+
+            setTimeout(() => { newWindow.resizeTo(500, 500); }, delay);
+            setTimeout(() => { newWindow.moveTo(200, 200); }, delay * 2);
+            setTimeout(() => { newWindow.close(); }, delay * 3);
+        }
+        
+        function changeCSS() {
+            const pElement = document.getElementById('text');
+            pElement.style.color = 'orange';
+            pElement.style.fontSize = '20pt'; 
+            pElement.style.fontFamily = '"Comic Sans MS"'; 
+        }
+
+        function removeSelectedOption() {
+            const selectElement = document.getElementById('select-to-remove');
+            const selectedIndex = selectElement.selectedIndex;
+            if (selectedIndex >= 0) {
+                selectElement.remove(selectedIndex);
+            } else {
+                alert("У списку немає елементів.");
+            }
+        }
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            const body = document.body;
+            const btn1 = document.getElementById('btn1-task3');
+            const btn2 = document.getElementById('btn2-task3');
+            const btn3 = document.getElementById('btn3-task3');
+            const link = document.getElementById('link-task3');
+
+            btn1.addEventListener('click', () => { body.style.backgroundColor = 'blue'; });
+            btn2.addEventListener('dblclick', () => { body.style.backgroundColor = 'pink'; });
+            btn3.addEventListener('mousedown', () => { body.style.backgroundColor = 'brown'; });
+            btn3.addEventListener('mouseup', () => { body.style.backgroundColor = 'white'; });
+
+            link.addEventListener('mouseover', () => { body.style.backgroundColor = 'yellow'; });
+            link.addEventListener('mouseout', () => { body.style.backgroundColor = 'white'; });
+
+            function updateWindowSize() {
+                document.getElementById('width-output').textContent = window.innerWidth;
+                document.getElementById('height-output').textContent = window.innerHeight;
+            }
+            window.addEventListener('resize', updateWindowSize);
+            updateWindowSize();
+        });
+    </script>
+</body>
+</html>
