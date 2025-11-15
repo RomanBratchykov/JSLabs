@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Лабораторна робота 14: Валідація JS</title>
+    <style>
+        body { font-family: sans-serif; line-height: 1.6; padding: 20px; }
+        h1 { color: #333; }
+        code { background: #f4f4f4; padding: 2px 5px; border-radius: 4px; }
+    </style>
+</head>
+<body>
+    <h1>Лабораторна робота 14: Валідація JS</h1>
+    <p>Результати виконання всіх завдань дивіться у консолі розробника.</p>
+    <p>Натисніть <code>F12</code> або <code>Ctrl+Shift+I</code> та перейдіть на вкладку <b>"Console"</b>.</p>
+
+    <script>
+        console.clear();
+
+        // -----------------------//
+
+        console.log("\n--- Завдання 1: Перевірка першого символу ---");
+        function upperCase(str) {
+          const re = /^[A-Z]/;
+          if (re.test(str)) {
+            console.log(`"${str}": String's starts with uppercase character`);
+          } else {
+            console.log(`"${str}": String's not starts with uppercase character`);
+          }
+        }
+        upperCase('regexp');
+        upperCase('RegExp');
+
+        // -----------------------//
+
+        console.log("\n--- Завдання 2: Базова перевірка Email ---");
+        function checkEmailBasic(email) {
+          const re = /.+@.+\..+/;
+          return re.test(email);
+        }
+        console.log(`"Qmail2@gmail.com": ${checkEmailBasic("Qmail2@gmail.com")}`);
+        console.log(`"not-an-email": ${checkEmailBasic("not-an-email")}`);
+
+        // -----------------------//
+
+        console.log("\n--- Завдання 3: Пошук 'd(b+)(d)' ---");
+        const str3 = "cdbBdbsbz";
+        const re3 = /d(b+)(d)/i;
+        const result3 = str3.match(re3);
+        console.log(`Для стрінги "${str3}" результат:`, result3);
+
+        // -----------------------//
+        
+        console.log("\n--- Завдання 4: Заміна підрядків місцями ---");
+        function swapWords(str) {
+          const re = /^(\w+)\s+(\w+)$/;
+          return str.replace(re, "$2, $1");
+        }
+        const inputStr4 = "Java Script";
+        console.log(`Вхід: "${inputStr4}" -> Вихід: "${swapWords(inputStr4)}"`);
+
+        // -----------------------//
+
+        console.log("\n--- Завдання 5: Валідація номера карти ---");
+        function validateCard(cardNumber) {
+          const re = /^\d{4}-\d{4}-\d{4}-\d{4}$/;
+          return re.test(cardNumber);
+        }
+        console.log(`"9999-9999-9999-9999": ${validateCard("9999-9999-9999-9999")}`);
+        console.log(`"9999-9999-9999-999": ${validateCard("9999-9999-9999-999")}`);
+        console.log(`"9999-test-9999-9999": ${validateCard("9999-test-9999-9999")}`);
+
+        // -----------------------//
+
+        console.log("\n--- Завдання 6: Розширена валідація Email ---");
+        function checkEmailAdvanced(email) {
+          const re = /^(?!.*--)[A-Za-z0-9][A-Za-z0-9_-]*@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+          if (re.test(email)) {
+            console.log(`"${email}": Email is correct!`);
+          } else {
+            console.log(`"${email}": Email is not correct!`);
+          }
+        }
+        checkEmailAdvanced('my_mail@gmail.com');
+        checkEmailAdvanced('#my_mail@gmail.com');
+        checkEmailAdvanced('my_ma--il@gmail.com');
+        checkEmailAdvanced('-my_mail@gmail.com');
+
+        /// -----------------------//
+
+        console.log("\n--- Завдання 7: Валідація логіну та пошук чисел ---");
+        function checkLogin(login) {
+          const loginRe = /^[A-Za-z][A-Za-z0-9.]{1,9}$/;
+          const isValid = loginRe.test(login);
+          const numberRe = /\d+(\.\d+)?/g;
+          const numbers = login.match(numberRe);
+          console.log(`\nПеревірка: "${login}"`);
+          console.log(`Валідність: ${isValid}`);
+          console.log(`Знайдені числа: ${numbers ? numbers.join(', ') : 'немає'}`);
+        }
+        checkLogin('ee1.1ret3');
+        checkLogin('ee1*1ret3');
+        checkLogin('1ee1.1ret3');
+        checkLogin('e'); 
+
+    </script>
+</body>
+</html>
